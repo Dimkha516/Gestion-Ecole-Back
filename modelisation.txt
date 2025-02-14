@@ -1,0 +1,76 @@
+const mongoose = require("mongoose");
+
+const niveauSchema = new mongoose.Schema({
+  nom: { type: String, required: true, unique: true }
+});
+
+module.exports = mongoose.model("Niveau", niveauSchema);
+------------------------------------------------------------
+
+const filiereSchema = new mongoose.Schema({
+  nom: { type: String, required: true, unique: true },
+  niveaux: [{ type: mongoose.Schema.Types.ObjectId, ref: "Niveau" }]
+});
+
+module.exports = mongoose.model("Filiere", filiereSchema);
+-----------------------------------------------------------------
+
+const filiereNiveauSchema = new mongoose.Schema({
+  filiere: { type: mongoose.Schema.Types.ObjectId, ref: "Filiere", required: true },
+  niveau: { type: mongoose.Schema.Types.ObjectId, ref: "Niveau", required: true },
+  horaires: String, 
+  cours: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cours" }],
+  etudiants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Etudiant" }]
+});
+
+module.exports = mongoose.model("FiliereNiveau", filiereNiveauSchema);
+
+
+
+---------------------------- TO DO POUR LE 13:
+
+--- Ajouter cours dans classe:
+
+--- CRUD Classe en affichant les détails:
+  -- Afficher tout
+  -- Filtrer par filiere
+  -- Filtrer par niveaux
+  -- Filtrer par filiere et niveau
+
+--- CRUD etudiant avec toutes les Validations et Contrôles:
+(Inclure l'ajout de l'étudiant dans classe avec MAJ de la classe)
+
+
+
+
+--- MAJ inscription etudiant en ajoutant le qrcode
+
+--- MAJ PHOTO ETUDIANT 
+
+--- Contrôle et Validation creation niveau academic------:: Pas trop urgent à revenir 
+
+
+--- CRUD FiliereNiveau(classe)
+
+--- ALEGER FONCTION CREATION FILIERE
+
+
+---------------------------------- REVIEWS/
+-- AJOUT AUTHENTIFICATIONS SUR CERTAINS ENDPOINTS
+-- AJOUT VALIDATIONS ET AUTRES ENDPOINTS POUR CERTAINS MODELS
+
+{
+  "prenom": "",
+  "nom": "test",
+  "dateNaissance": "2000-09-01",
+  "lieuNaissance": "dakar",
+  "adresse": "medina",
+  "sexe": "",
+  "telephone": "771235562",
+  "email": "khady@gmail.com",
+  "classID": "67ab76ef56b408d4c1313e17",
+  "dateInscription": "2000-09-01",
+  "prenomNomTuteur": "Baba Sall",
+  "telephoneTuteur":"701283390",
+  "qrCode": "test"
+}

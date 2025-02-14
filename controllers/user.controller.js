@@ -1,4 +1,3 @@
-const { boolean } = require("joi");
 const UserModel = require("../models/user.model");
 const ObjectID = require("mongoose").Types.ObjectId;
 const createUserValidator = require("../utils/validators/createUserValidator");
@@ -12,6 +11,7 @@ module.exports.createUser = async (req, res) => {
       field: detail.path[0],
       message: detail.message,
     }));
+    console.log("Erreur création")
     return res.status(400).json({ errors: errorMessages });
   }
 
