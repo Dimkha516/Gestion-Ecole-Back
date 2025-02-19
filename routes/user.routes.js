@@ -15,7 +15,8 @@ router.post("/logout", logout);
 
 // CRUD USER
 router.post("/create", isAuthenticated, createUser);
-router.get("/all", isAuthenticated, getAllUsers);
+// router.get("/all", isAuthenticated, getAllUsers);
+router.get("/all", getAllUsers);
 router.get("/getOneUser/:userId", isAuthenticated, getUserById);
 router.get("/filters", isAuthenticated, filterUsersByAttribute);
 // http://localhost:5000/api/v1/users/filters?attribute=profil&value=admin

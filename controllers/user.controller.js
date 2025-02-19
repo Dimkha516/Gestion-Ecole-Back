@@ -47,13 +47,13 @@ module.exports.createUser = async (req, res) => {
 
 module.exports.getAllUsers = async (req, res) => {
   const connectedUser = res.locals.user;
-  if (connectedUser.profil !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
-  }
+  // if (connectedUser.profil !== "admin") {
+  //   return res
+  //     .status(403)
+  //     .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
+  // }
   try {
-    const allUsers = await UserModel.find({}).select("-password");
+    const allUsers = await UserModel.find().select("-password");
     res.status(200).json({ allUsers });
   } catch (err) {
     console.error("Erreur lors de la récupération des utilisateurs");
@@ -88,13 +88,13 @@ module.exports.getUserById = async (req, res) => {
 
 // Filter users by attributes
 
-module.exports.filterUsersByAttribute = async (req, res) => {
+  module.exports.filterUsersByAttribute = async (req, res) => {
   const connectedUser = res.locals.user;
   if (connectedUser.profil !== "admin") {
     return res
       .status(403)
       .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
-  }
+  } 
 
   const { attribute, value } = req.query;
 
