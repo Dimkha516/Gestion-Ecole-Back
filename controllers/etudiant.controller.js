@@ -2,30 +2,6 @@ const EtudiantModel = require("../models/etudiant.model");
 const FiliereNiveauModel = require("../models/filiereNiveau.model");
 const generateMatricule = require("../utils/factories/generateMatricule");
 
-
-module.exports.registerEtudiantToClasse = async (req, res) => {
-  const { etudiantId, classeId } = req.body;
-  try {
-    const etudiant = await EtudiantModel.findById(etudiantId);
-    if (!etudiant) {
-      return res.status(404).json({ message: "Etudiant non trouvé" });
-    }
-    const classe = await ClasseModel.findByIdAndUpdate(
-      classeId,
-      { $push: { etudiants: etudiantId } },
-      { new: true }
-    );
-    if (!classe) {
-      return res.status(404).json({ message: "Classe non trouvée" });
-    }
-    res
-      .status(200)
-      .json({ message: "Etudiant inscrit avec succès à la classe" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 // REGISTER A NEW STUDENT:
 module.exports.createEtudiantAndRegisterClasse = async (req, res) => {
   const {
@@ -44,7 +20,7 @@ module.exports.createEtudiantAndRegisterClasse = async (req, res) => {
   } = req.body;
 
   try {
-    const matricule = generateMatricule(prenom, nom)
+    const matricule = generateMatricule(prenom, nom);
     const newEtudiant = await EtudiantModel.create({
       matricule,
       prenom,
@@ -59,7 +35,7 @@ module.exports.createEtudiantAndRegisterClasse = async (req, res) => {
       dateInscription,
       prenomNomTuteur,
       telephoneTuteur,
-      qrCode: "lkdds",
+      qrCode: "test maty",
     });
     const classe = await FiliereNiveauModel.findByIdAndUpdate(
       classID,
@@ -84,11 +60,47 @@ module.exports.createEtudiantAndRegisterClasse = async (req, res) => {
 };
 
 // GET ALL STUDENTS:
+module.exports.getAllStudents = async (req, res) => {
+  try {
+    const students = await EtudiantModel.find();
+    if (!students) {
+      return res.status(404).json({ message: "Aucun étudiant trouvé" });
+    }
+    res.status(200).json({ students });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 // GET A STUDENT BY ID:
+module.exports.getStudentById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const student = await EtudiantModel.findById(id);
+    if (!student) {
+      return res.status(404).json({ message: "Étudiant non trouvé" });
+    }
+    res.status(200).json({ student });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// GET STUDENTS BY FILIERES:
+module.exports.getStudentsByFilters = async (req, res) => {
+  const { attributes, value } = req.query;
+
+  try {
+    const students = await EtudiantModel.find({ [attributes]: value });
+    if (!students) {
+      return res.status(404).json({ message: "Aucun étudiant trouvé" });
+    }
+    res.status(200).json({ students });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 // UPDATE A STUDENT BY ID:
-
-// GET STUDENTS BY FILTERS:
 
 // CHERCHE STUDENT
