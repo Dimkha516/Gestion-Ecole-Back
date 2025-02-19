@@ -13,10 +13,10 @@ const coursesRoutes = require("./routes/cours.routes");
 const filiereNiveauRoutes = require("./routes/filiereNiveau.routes");
 const studentsRoutes = require("./routes/etudiant.routes");
 const teachersRoutes = require("./routes/professeurs.routes");
+const statisticsRoutes = require("./routes/statistics.routes");
 const app = express();
 
 // Cors Options:
-
 const corsOptions = {
   origin: process.env.CLIENT_URL, // replace with your frontend URL
   credentials: true,
@@ -49,6 +49,7 @@ app.use("/api/v1/cours", coursesRoutes);
 app.use("/api/v1/classes", filiereNiveauRoutes);
 app.use("/api/v1/students", studentsRoutes);
 app.use("/api/v1/teachers", teachersRoutes);
+app.use("/api/v1/statistics", statisticsRoutes);
 
 // SERVER
 connectToDB();
