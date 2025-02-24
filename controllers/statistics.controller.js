@@ -1,3 +1,4 @@
+const ClassroomModel = require("../models/classroom.model");
 const CourModel = require("../models/cour.model");
 const EudiantModel = require("../models/etudiant.model");
 const FiliereModel = require("../models/filiere.model");
@@ -10,11 +11,13 @@ module.exports.getStatistics = async (req, res) => {
   const totalTeachers = await ProfesseurModel.countDocuments();
   const totalStudents = await EudiantModel.countDocuments();
   const totalCours = await CourModel.countDocuments();
+  const totalSalles = await ClassroomModel.countDocuments();
   res.status(200).json({
     totalFilieres,
     totalStudents,
     totalClasses,
     totalTeachers,
     totalCours,
+    totalSalles,
   });
 };

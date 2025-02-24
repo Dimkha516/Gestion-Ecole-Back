@@ -62,11 +62,26 @@ module.exports.createEtudiantAndRegisterClasse = async (req, res) => {
 // GET ALL STUDENTS:
 module.exports.getAllStudents = async (req, res) => {
   try {
-    const students = await EtudiantModel.find();
-    if (!students) {
+    const students = await EtudiantModel.find().populate({
+      path: "classID",
+      populate: [
+        { path: "filiere", select: "nom -_id" },
+        { path: "niveau", select: "nom -_id" },
+      ],
+    });
+    if (!students || students.length === 0) {
       return res.status(404).json({ message: "Aucun étudiant trouvé" });
     }
-    res.status(200).json({ students });
+    // Formater la réponse pour afficher directement les noms
+    const formattedStudents = students.map((student) => ({
+      _id: student._id,
+      matricule: student.matricule,
+      prenom: student.prenom,
+      nom: student.nom,
+      filiere: student.classID?.filiere?.nom || "Non défini",
+      niveau: student.classID?.niveau?.nom || "Non défini",
+    }));
+    res.status(200).json({ students: formattedStudents });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

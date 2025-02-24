@@ -14,16 +14,17 @@ const filiereNiveauRoutes = require("./routes/filiereNiveau.routes");
 const studentsRoutes = require("./routes/etudiant.routes");
 const teachersRoutes = require("./routes/professeurs.routes");
 const statisticsRoutes = require("./routes/statistics.routes");
+const classroomsRoutes = require("./routes/classrooms.routes");
 const app = express();
 
 // Cors Options:
 const corsOptions = {
   origin: process.env.CLIENT_URL, // replace with your frontend URL
   credentials: true,
-  'allowedHeaders': ["sessionId", "Content-Type"],
-  'exposedHeaders': ["sessionId"],
-  'methods': "GET,HEAD,PUT,PATCH,POST,DELETE",
-  'preflightContinue': false,
+  allowedHeaders: ["sessionId", "Content-Type"],
+  exposedHeaders: ["sessionId"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
 };
 
 app.use(cors(corsOptions));
@@ -35,10 +36,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // JWT:
-// app.get('*', checkUser);
-app.use("*", checkUser);
-app.get("/jwt", requireAuth, (req, res) => {
-  res.status(200).send(res.locals.user.id);
+app.get('*', checkUser);
+// app.use(checkUser);
+app.get("/api/v1/jwt", requireAuth, (req, res) => {
+  res.status(200).send(res.locals.user);
 });
 
 // ROUTES:
@@ -50,6 +51,7 @@ app.use("/api/v1/classes", filiereNiveauRoutes);
 app.use("/api/v1/students", studentsRoutes);
 app.use("/api/v1/teachers", teachersRoutes);
 app.use("/api/v1/statistics", statisticsRoutes);
+app.use("/api/v1/classrooms", classroomsRoutes);
 
 // SERVER
 connectToDB();
