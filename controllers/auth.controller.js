@@ -19,6 +19,7 @@ module.exports.signIn = async (req, res) => {
     res.status(200).json({ ConnectedUser: user });
     await updateUserLastConnexionTime(user._id);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({ message: error.message });
   }
 };
@@ -43,4 +44,19 @@ module.exports.signUp = async (req, res) => {
 module.exports.logout = (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
   res.status(200).json({ message: "Déconnexion réussie" });
+};
+
+module.exports.fakeLogin = (req, res) => {
+  const user = {
+    _id: "609a137f4871992460384a04",
+    prenom: "John",
+    nom: "Doe",
+    email: "johndoe@example.com",
+    password: "password",
+    profil: "admin",
+    lastConnexionTime: new Date(),
+  };
+  const token = createToken(user._id);
+  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge });
+  res.status(200).json({ ConnectedUser: user });
 };

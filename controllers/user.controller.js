@@ -11,7 +11,7 @@ module.exports.createUser = async (req, res) => {
       field: detail.path[0],
       message: detail.message,
     }));
-    console.log("Erreur création")
+    console.log("Erreur création");
     return res.status(400).json({ errors: errorMessages });
   }
 
@@ -46,12 +46,6 @@ module.exports.createUser = async (req, res) => {
 };
 
 module.exports.getAllUsers = async (req, res) => {
-  const connectedUser = res.locals.user;
-  // if (connectedUser.profil !== "admin") {
-  //   return res
-  //     .status(403)
-  //     .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
-  // }
   try {
     const allUsers = await UserModel.find().select("-password");
     res.status(200).json({ allUsers });
@@ -62,13 +56,6 @@ module.exports.getAllUsers = async (req, res) => {
 };
 
 module.exports.getUserById = async (req, res) => {
-  const connectedUser = res.locals.user;
-  if (connectedUser.profil !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
-  }
-
   const userId = req.params.userId;
   if (!ObjectID.isValid(userId)) {
     return res.status(400).json({ message: "L'ID est invalide" });
@@ -88,13 +75,13 @@ module.exports.getUserById = async (req, res) => {
 
 // Filter users by attributes
 
-  module.exports.filterUsersByAttribute = async (req, res) => {
+module.exports.filterUsersByAttribute = async (req, res) => {
   const connectedUser = res.locals.user;
   if (connectedUser.profil !== "admin") {
     return res
       .status(403)
       .json({ message: "Vous n'êtes pas autorisé à effectuer cette action" });
-  } 
+  }
 
   const { attribute, value } = req.query;
 
